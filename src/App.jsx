@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Card } from "./components/Card";
 
@@ -7,6 +7,10 @@ export default function App() {
   const [data, setData] = useState(null);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    isError && setIsError(false);
+  }, [search]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -42,7 +46,11 @@ export default function App() {
         <button onClick={handleClick}>Buscar</button>
       </div>
       {isLoading && <p>Cargando...</p>}
-      {isError && <p>No se Encontraron Resultados</p>}
+      {isError && (
+        <p>
+          No se encontró el pokemon <strong>{search}</strong>
+        </p>
+      )}
       {data && !isLoading && !isError && <Card info={data} />}
     </div>
   );
